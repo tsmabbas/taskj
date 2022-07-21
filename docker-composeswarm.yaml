@@ -1,0 +1,28 @@
+#docker-compose.yaml
+
+version: "3.8"
+services:
+  flask-app:
+    build: ./task/
+    image: task-flask-app
+    deploy:
+      replicas: 3
+    ports:
+    - target: 5000
+      published: 5000
+      protocol: tcp
+    environment:
+      # YOUR_ENV_VARIABLE: ${YOUR_ENV_VARIABLE}  
+      # YOUR_ENV_VARIABLE: ${YOUR_ENV_VARIABLE} 
+      SECRET_KEY: ${SECRET_KEY}
+      DATABASE_URI: ${DATABASE_URI}
+  nginx:
+    image: nginx:latest
+    ports:
+    - target: 80
+      published: 80
+      protocol: tcp
+    volumes:
+    - type: bind
+      source: ./nginx/nginx.conf
+      target: /etc/nginx/nginx.conf
